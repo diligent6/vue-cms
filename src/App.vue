@@ -1,9 +1,14 @@
 <template>
-  <Home />
+  <div class="app">
+    <RouterView />
+  </div>
 </template>
 
-<script setup lang="ts">
-import Home from '@/views/Home.vue'
-</script>
+<script setup lang="ts"></script>
 
-<style scoped></style>
+<style scoped>
+.app {
+  width: 100vw;
+  height: 100vh;
+}
+</style>
