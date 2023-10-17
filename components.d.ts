@@ -7,6 +7,10 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    Analysis: typeof import('./src/views/analysis/dashboard/analysis.vue')['default']
+    Category: typeof import('./src/views/main/product/category.vue')['default']
+    Dashboard: typeof import('./src/views/main/analysis/dashboard/dashboard.vue')['default']
+    Department: typeof import('./src/views/main/system/department/department.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
@@ -28,17 +32,24 @@ declare module 'vue' {
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
+    Goods: typeof import('./src/views/main/product/goods/goods.vue')['default']
     Home: typeof import('./src/views/Home.vue')['default']
     Login: typeof import('./src/views/login/Login.vue')['default']
     LoginPanel: typeof import('./src/views/login/cpns/login-panel.vue')['default']
     Main: typeof import('./src/views/main/Main.vue')['default']
     MainHeader: typeof import('./src/components/main-header/main-header.vue')['default']
     MainMenus: typeof import('./src/components/main-menus/main-menus.vue')['default']
+    Menu: typeof import('./src/views/main/system/menu/menu.vue')['default']
     NotFound: typeof import('./src/views/not-found/NotFound.vue')['default']
+    Overriew: typeof import('./src/views/analysis/overriew.vue')['default']
+    Overview: typeof import('./src/views/main/analysis/orverview/overview.vue')['default']
     PanelAccount: typeof import('./src/views/login/cpns/panel-account.vue')['default']
     PanelMobile: typeof import('./src/views/login/cpns/panel-mobile.vue')['default']
     PanelMoile: typeof import('./src/views/login/cpns/panel-moile.vue')['default']
+    Product: typeof import('./src/views/main/product/category/product.vue')['default']
+    Role: typeof import('./src/views/main/system/role/role.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    User: typeof import('./src/views/main/system/user/user.vue')['default']
   }
 }

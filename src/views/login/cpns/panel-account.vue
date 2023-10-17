@@ -64,6 +64,7 @@ function loginAction(isChecked: boolean) {
             message: '用户名或者密码错误',
             type: 'error'
           })
+          return
         }
 
         //登录成功

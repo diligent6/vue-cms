@@ -8,32 +8,58 @@
     <!-- 2. 菜单部分 -->
     <el-menu
       :collapse="isCollapse"
-      default-active="2"
+      :default-active="defaultActiveIndex"
       text-color="#b7bdc3"
       active-text-color="#fff"
       background-color="#001529"
     >
-      <el-sub-menu index="1">
-        <template #title>
-          <el-icon><location /></el-icon>
-          <span>Navigator One</span>
-        </template>
-        <el-menu-item index="1">是打发打发</el-menu-item>
-        <el-menu-item index="2">是打发打发</el-menu-item>
-        <el-menu-item index="3">是打发打发</el-menu-item>
-        <el-menu-item index="4">是打发打发</el-menu-item>
-      </el-sub-menu>
+      <template v-for="(item, index) in userMenus" :key="index">
+        <el-sub-menu :index="String(index)">
+          <template #title>
+            <el-icon>
+              <component :is="item.icon.split('-icon-')[1]"></component>
+            </el-icon>
+            <span>{{ item.name }}</span>
+          </template>
+          <template v-for="iten in item.children" :key="iten.id">
+            <el-menu-item :index="iten.id + ''" @click="menuItemClick(iten)"
+              >{{ iten.name }}
+            </el-menu-item>
+          </template>
+        </el-sub-menu>
+      </template>
     </el-menu>
   </div>
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
+import { storeToRefs } from 'pinia'
+import useLoginStore from '../../stores/login/login'
+import { useRouter } from 'vue-router'
+import { firstMenu } from '../../utils/map-menus'
+
+//定义属性 其值让父组件传递进来
+defineProps({
   isCollapse: {
     type: Boolean,
     default: false
   }
 })
+
+//从store中获取数据
+const loginStore = useLoginStore()
+const { userMenus } = storeToRefs(loginStore)
+
+const router = useRouter()
+
+//默认页面
+const defaultActiveIndex = firstMenu.id.toString()
+router.push(firstMenu.url)
+
+//监听点击事件并进行router导航
+const menuItemClick = (item: any) => {
+  router.push(item.url)
+}
 </script>
 
 <style lang="less" scoped>

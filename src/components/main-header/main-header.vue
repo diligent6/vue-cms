@@ -9,7 +9,6 @@ import type { emit } from 'process';
 <script setup lang="ts">
 const emits = defineEmits(['fold-change'])
 const iconClick = () => {
-  console.log('adas')
   emits('fold-change')
 }
 </script>
