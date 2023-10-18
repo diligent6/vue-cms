@@ -1,13 +1,20 @@
 <template>
   <div class="not-found">
-    <h2>not-found</h2>
+    <el-result icon="error" title="404" sub-title="The Page Not Found">
+      <template #extra>
+        <el-button type="primary" @click="backBtnClick">Back</el-button>
+      </template>
+    </el-result>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
 
-<style lang="less" scoped>
-.not-found {
-  color: red;
+const router = useRouter()
+const backBtnClick = () => {
+  router.push('/main')
 }
-</style>
+</script>
+
+<style lang="less" scoped></style>

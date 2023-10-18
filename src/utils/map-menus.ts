@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-
+//加载本地路由对象
 function loadLocalRoutes() {
   //0. 定义一个数组存储本地所有的route对象
   const localRoutes: RouteRecordRaw[] = []
@@ -50,4 +50,33 @@ export function mapMenusToRoutes(menus: any[]) {
   }
 
   return selectedRoutes
+}
+
+interface IBredCrums {
+  name: string
+  path: string
+}
+
+export function mapPathToBreadCrums(path: string, userMenus: any) {
+  //定义面包屑数据
+  const breadCrums: IBredCrums[] = []
+
+  //遍历菜单 根据path选取对应的菜单信息
+  for (const menu of userMenus) {
+    for (const submenu of menu.children) {
+      if (submenu.url === path) {
+        //首先存储顶层菜单信息
+        breadCrums.push({
+          name: menu.name,
+          path: menu.url
+        })
+        //存储当前菜单信息
+        breadCrums.push({
+          name: submenu.name,
+          path: submenu.url
+        })
+      }
+    }
+  }
+  return breadCrums
 }

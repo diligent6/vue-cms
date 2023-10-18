@@ -22,7 +22,6 @@ const useLoginStore = defineStore('login', {
       //01-获取id 和 token
       const id = res.data?.id
       const token = res.data?.token
-      this.id = id
       this.token = token
       //本地化存储
       localCache.setCache(TOKEN, token)

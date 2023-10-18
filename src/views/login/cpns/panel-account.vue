@@ -61,6 +61,7 @@ function loginAction(isChecked: boolean) {
         if (!token) {
           console.log('用户名或者密码错误')
           ElMessage({
+            showClose: true,
             message: '用户名或者密码错误',
             type: 'error'
           })
@@ -69,6 +70,7 @@ function loginAction(isChecked: boolean) {
 
         //登录成功
         ElMessage({
+          showClose: true,
           message: '登录成功',
           type: 'success'
         })
@@ -84,6 +86,7 @@ function loginAction(isChecked: boolean) {
     } else {
       //登录失败，给出提示信息
       ElMessage({
+        showClose: true,
         message: '用户名或者密码错误',
         type: 'error'
       })

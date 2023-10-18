@@ -7,9 +7,9 @@ import vue from '@vitejs/plugin-vue';
       </el-aside>
       <el-container>
         <el-header height="50px">
-          <MainHeader @fold-change="handFoldChange" />
+          <MainHeader @fold-change="handFoldChange" :is-fold="isCollapse" />
         </el-header>
-        <el-main>
+        <el-main class="content-section">
           <RouterView />
         </el-main>
       </el-container>
@@ -27,6 +27,7 @@ const handFoldChange = () => {
 <style lang="less" scoped>
 .main {
   height: 100%;
+
   .main-content {
     height: 100%;
     .el-aside {
@@ -45,6 +46,13 @@ const handFoldChange = () => {
       //添加动画
       transition: width 0.3s ease-in;
     }
+  }
+  .el-header {
+    padding: 0;
+  }
+  .content-section {
+    padding: 0;
+    background-color: #f5f5f5;
   }
 }
 </style>
