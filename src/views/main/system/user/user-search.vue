@@ -2,20 +2,20 @@
   <div class="user-search">
     <div class="header"></div>
     <!--输入框表单部分  -->
-    <el-form :model="formData" :inline="true" :rules="rules">
+    <el-form :model="formData" :inline="true" ref="formRef">
       <el-row :gutter="80">
         <el-col :span="8">
-          <el-form-item label="id" label-width="80px">
+          <el-form-item label="id" label-width="80px" prop="id">
             <el-input placeholder="请输入id" clearable v-model="formData.id" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="用户名" label-width="80px">
-            <el-input placeholder="请输入用户名" clearable v-model="formData.userName" />
+          <el-form-item label="用户名" label-width="80px" prop="name">
+            <el-input placeholder="请输入用户名" clearable v-model="formData.name" />
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="真实姓名" label-width="80px">
+          <el-form-item label="真实姓名" label-width="80px" prop="realName">
             <el-input placeholder="请输入真实姓名" clearable v-model="formData.realName" />
           </el-form-item>
         </el-col>
@@ -27,15 +27,15 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="用户状态" label-width="80px">
-            <el-select placeholder="请输入用户状态" v-model="formData.status">
-              <el-option label="启用" value="true" />
-              <el-option label="禁用" value="false" />
+          <el-form-item label="用户状态" label-width="80px" prop="enable">
+            <el-select placeholder="请输入用户状态" v-model="formData.enable">
+              <el-option label="启用" value="1" />
+              <el-option label="禁用" value="0" />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="创建时间" label-width="80px">
+          <el-form-item label="创建时间" label-width="80px" prop="createAt">
             <el-date-picker
               v-model="formData.createAt"
               type="daterange"
@@ -51,36 +51,46 @@
 
     <!-- 底部按钮部分 -->
     <div class="footer">
-      <el-button class="reset" color="#ecf5ff">
+      <el-button class="reset" color="#ecf5ff" @click="handleResetClick">
         <el-icon><Refresh /></el-icon>
         重置</el-button
       >
-      <el-button class="search" type="primary" :icon="Search"> 搜索</el-button>
+      <el-button class="search" type="primary" :icon="Search" @click="handleSerchClick">
+        搜索</el-button
+      >
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { Search } from '@element-plus/icons-vue'
-import { type FormRules } from 'element-plus'
-//定义表单数据对象
 
+import type { ElForm } from 'element-plus'
+
+//定义表单数据对象
 const formData = reactive({
   id: '',
-  userName: '',
+  name: '',
   realName: '',
   phoneNumber: '',
-  status: '',
+  enable: '',
   createAt: ''
 })
-const rules: FormRules = {
-  phoneNumber: [
-    {
-      pattern: /^[0-9]*$/,
-      message: '必须是数字',
-      trigger: 'change'
-    }
-  ]
+
+const emits = defineEmits(['resetClick', 'searchClick'])
+//重置按钮的点击，刷新页面 调用action进行一次请求
+const formRef = ref<InstanceType<typeof ElForm>>()
+
+const handleResetClick = () => {
+  //清空搜索框信息
+  formRef.value?.resetFields()
+
+  emits('resetClick')
+}
+
+//查询用户的操作
+const handleSerchClick = () => {
+  emits('searchClick', formData)
 }
 </script>
 

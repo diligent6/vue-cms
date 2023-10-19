@@ -1,7 +1,12 @@
 <template>
   <div class="user">
-    <UserSearch />
-    <UserContent />
+    <UserSearch @reset-click="handleRestClik" @search-click="handleSearchClick" />
+    <UserContent
+      ref="contentRef"
+      @create-btn-click="handleCreateClick"
+      @edit-btn-clik="handleEditClick"
+    />
+    <UserModal ref="modalRef" />
   </div>
 </template>
 
@@ -11,11 +16,27 @@ export default {
 }
 </script>
 <script lang="ts" setup>
-import useUserStore from '../../../../stores/main/user'
+import userContent from './user-content.vue'
+import userModal from './user-modal.vue'
+const contentRef = ref<InstanceType<typeof userContent>>()
 
-//发送网络请求获取数据
-const userStore = useUserStore()
-userStore.fetchUserListAction()
+//处理搜索页面的相关事件
+const handleRestClik = () => {
+  contentRef.value?.fetchUserList()
+}
+const handleSearchClick = (formData: any) => {
+  contentRef.value?.fetchUserList(formData)
+}
+
+//新建和编辑操作
+
+const modalRef = ref<InstanceType<typeof userModal>>()
+const handleCreateClick = () => {
+  modalRef.value?.showModal()
+}
+const handleEditClick = (payload: any) => {
+  modalRef.value?.showModal(true, payload)
+}
 </script>
 
 <style scoped>
@@ -23,3 +44,4 @@ userStore.fetchUserListAction()
   padding: 20px 30px;
 }
 </style>
+../../../../stores/main/system/user
