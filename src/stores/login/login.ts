@@ -4,7 +4,7 @@ import { localCache } from '@/utils/cache'
 import { defineStore } from 'pinia'
 import { TOKEN, USER_INFO, USER_MENUS } from '../../global/const'
 
-import { mapMenusToRoutes } from '@/utils/map-menus'
+import { mapMenusToPermissions, mapMenusToRoutes } from '@/utils/map-menus'
 import router from '@/router'
 import type { ILoginState } from '../types/login'
 const useLoginStore = defineStore('login', {
@@ -13,7 +13,9 @@ const useLoginStore = defineStore('login', {
     //菜单信息
     userMenus: [],
     //用户信息
-    userInfo: {}
+    userInfo: {},
+    //用户权限按钮信息
+    permissions: []
   }),
   actions: {
     async loginAccountAction(account: IAccount) {
@@ -40,10 +42,11 @@ const useLoginStore = defineStore('login', {
       this.userMenus = menus
       localCache.setCache(USER_MENUS, menus)
 
+      //04-用户权限按钮信息的获取
+      const permissions = mapMenusToPermissions(menus)
+      this.permissions = permissions
+      //重要！！！路由的动态注册
       const routes = mapMenusToRoutes(menus)
-
-      // sessionCache.setCache(ROUTES, routes)
-      //动态注册
       routes.forEach((item) => router.addRoute('main', item))
 
       //进行页面跳转
@@ -62,6 +65,10 @@ const useLoginStore = defineStore('login', {
         this.token = token
         this.userInfo = userInfo
         this.userMenus = userMenus
+
+        //04-用户权限按钮信息的获取
+        const permissions = mapMenusToPermissions(userMenus)
+        this.permissions = permissions
 
         //动态注册路由
         const routes = mapMenusToRoutes(userMenus)
