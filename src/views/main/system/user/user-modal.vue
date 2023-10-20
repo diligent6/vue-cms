@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import useSystemStore from '@/stores/main/system/system'
 import type { ElForm } from 'element-plus'
-
+//1.定义相关数据
 //是否是编辑
 const isEdit = ref(false)
 //模态框表单数据模型
@@ -62,8 +62,7 @@ const systemStore = useSystemStore()
 //控制模态框的显示和隐藏
 const dialogFormVisible = ref(false)
 
-//创建新用户
-
+// 2. 创建/编辑用户的逻辑
 //展示模态框
 function showModal(isEditValue: boolean = false, userData?: any) {
   dialogFormVisible.value = true

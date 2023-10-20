@@ -55,7 +55,13 @@
         <el-icon><Refresh /></el-icon>
         重置</el-button
       >
-      <el-button class="search" type="primary" :icon="Search" @click="handleSerchClick">
+      <el-button
+        v-if="isQuery"
+        class="search"
+        type="primary"
+        :icon="Search"
+        @click="handleSerchClick"
+      >
         搜索</el-button
       >
     </div>
@@ -66,7 +72,9 @@
 import { Search } from '@element-plus/icons-vue'
 
 import type { ElForm } from 'element-plus'
+import { usePermissons } from '@/hooks/usePermissons'
 
+const isQuery = ref(usePermissons('system:users:query'))
 //定义表单数据对象
 const formData = reactive({
   id: '',

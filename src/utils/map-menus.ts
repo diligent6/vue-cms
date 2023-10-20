@@ -57,6 +57,7 @@ interface IBredCrums {
   path: string
 }
 
+//面包屑数据的相关处理
 export function mapPathToBreadCrums(path: string, userMenus: any) {
   //定义面包屑数据
   const breadCrums: IBredCrums[] = []
@@ -79,4 +80,29 @@ export function mapPathToBreadCrums(path: string, userMenus: any) {
     }
   }
   return breadCrums
+}
+
+//用户权限按钮的相关处理【提取权限按钮的相关信息】
+export function mapMenusToPermissions(menus: any[]) {
+  //01-定义存储权限信息的数组
+  const permissions: any[] = []
+
+  //02-定义提取权限信息的递归函数
+  function recurseGetPermissionInfo(menus: any[]) {
+    //遍历当前菜单
+
+    for (const item of menus) {
+      //提取权限信息
+      if (item.type === 3) {
+        permissions.push(item.permission)
+      } else {
+        //继续访问children
+        recurseGetPermissionInfo(item.children ?? [])
+      }
+    }
+  }
+
+  //03-调用递归函数
+  recurseGetPermissionInfo(menus)
+  return permissions
 }

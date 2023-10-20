@@ -4,13 +4,13 @@
     <div class="header">
       <h2 class="title">用户列表</h2>
       <div class="operation">
-        <el-button type="primary" @click="handleAddBtnClick">新增数据</el-button>
-        <el-button type="danger">删除数据</el-button>
+        <el-button type="primary" @click="handleAddBtnClick" v-if="isCreate">新增数据</el-button>
+        <el-button type="danger" @click="handleDeleteUsers">删除数据</el-button>
       </div>
     </div>
     <!-- 表格部分 -->
     <div class="table">
-      <el-table :data="userList" style="width: 100%" border fit>
+      <el-table :data="userList" style="width: 100%" border fit @select="handleSelect">
         <el-table-column type="selection" min-width="55" align="center" />
         <el-table-column type="index" min-width="90" label="序号" align="center" />
 
@@ -30,11 +30,15 @@
             />
           </template>
         </el-table-column>
-        <el-table-column prop="createAt" label="创建时间" min-width="240" align="center" />
-        <el-table-column prop="updateAt" label="更新时间" min-width="240" align="center" />
+        <el-table-column prop="createAt" label="创建时间" min-width="240" align="center">
+          <template #default="scope"> {{ formatDate(scope.row.createAt) }} </template>
+        </el-table-column>
+        <el-table-column prop="updateAt" label="更新时间" min-width="240" align="center">
+          <template #default="scope"> {{ formatDate(scope.row.updateAt) }} </template>
+        </el-table-column>
         <el-table-column label="操作" min-width="180" align="center">
           <template #default="scope">
-            <el-button size="small" @click="editBtnClik(scope.row)">
+            <el-button size="small" @click="editBtnClik(scope.row)" v-if="isUpdate">
               <el-icon><Edit /></el-icon>
             </el-button>
             <el-popconfirm
@@ -42,6 +46,7 @@
               confirm-button-text="确认"
               cancel-button-text="取消"
               @confirm="handleDeleteClick(scope.row.id)"
+              v-if="isDelete"
             >
               <template #reference>
                 <el-button size="small" type="danger">
@@ -83,13 +88,20 @@
 <script setup lang="ts">
 import useSystemStore from '@/stores/main/system/system'
 import { storeToRefs } from 'pinia'
+import { formatDate } from '@/utils/format_date'
+import { usePermissons } from '@/hooks/usePermissons'
 
+//0.用户权限控制的相关逻辑
+const isCreate = ref(usePermissons('system:users:create'))
+const isDelete = ref(usePermissons('system:users:delete'))
+const isUpdate = ref(usePermissons('system:users:update'))
+
+// 1.获取当前页面的相关数据
 //从store中获取表格数
 const userStore = useSystemStore()
 const pageSize = ref(10)
 const currentPage = ref(1)
 //保存当前页 和 页面数量
-
 userStore.size = computed(() => {
   return pageSize.value
 }) as any
@@ -99,7 +111,8 @@ userStore.offset = computed(() => {
 fetchUserList()
 const { userList, totalCount } = storeToRefs(userStore)
 
-//处理状态切换的逻辑
+//2.表格相关的逻辑
+// 处理状态切换的逻辑
 const isLoading = ref(false)
 const handleStatusChange = (userData: any) => {
   isLoading.value = true
@@ -127,6 +140,19 @@ const handleSizeChange = () => {
 const handleDeleteClick = (userId: string) => {
   userStore.deleteUserByIdAction(userId)
 }
+//批量删除操纵
+let selectedUsers: any[] = []
+const handleSelect = (rows: any) => {
+  selectedUsers = rows
+}
+const handleDeleteUsers = () => {
+  if (!selectedUsers.length) return
+
+  selectedUsers.forEach((item) => {
+    userStore.deleteUserByIdAction(item.id)
+  })
+}
+
 const emits = defineEmits(['createBtnClick', 'editBtnClik'])
 //新建按钮点击
 const handleAddBtnClick = () => {
