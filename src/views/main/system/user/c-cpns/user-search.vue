@@ -1,5 +1,5 @@
 <template>
-  <div class="user-search">
+  <div class="user-search" v-if="isQuery">
     <div class="header"></div>
     <!--输入框表单部分  -->
     <el-form :model="formData" :inline="true" ref="formRef">
@@ -55,13 +55,7 @@
         <el-icon><Refresh /></el-icon>
         重置</el-button
       >
-      <el-button
-        v-if="isQuery"
-        class="search"
-        type="primary"
-        :icon="Search"
-        @click="handleSerchClick"
-      >
+      <el-button class="search" type="primary" :icon="Search" @click="handleSerchClick">
         搜索</el-button
       >
     </div>

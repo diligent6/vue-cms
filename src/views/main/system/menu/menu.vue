@@ -1,17 +1,17 @@
 <template>
   <div class="menu">
-    <h2>menu</h2>
+    <PageSearch :search-config="searchconfig" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  setup() {
-    return {}
-  }
-})
+export default {
+  name: 'menuPge'
+}
 </script>
 
+<script setup lang="ts">
+import searchconfig from './config/serch.config'
+</script>
 <style scoped></style>
+./config/serch.config

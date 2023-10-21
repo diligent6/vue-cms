@@ -16,8 +16,8 @@ export default {
 }
 </script>
 <script lang="ts" setup>
-import userContent from './user-content.vue'
-import userModal from './user-modal.vue'
+import userContent from './c-cpns/user-content.vue'
+import userModal from './c-cpns/user-modal.vue'
 const contentRef = ref<InstanceType<typeof userContent>>()
 
 //处理搜索页面的相关事件
